@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html dir="ltr">
+	<head>
+		<meta charset='utf-8' />
+		<link href="https://static.junge-piraten.de/bootstrap-2.1.1/css/bootstrap.css" rel="stylesheet" />
+		<link href="https://static.junge-piraten.de/bootstrap-2.1.1/css/bootstrap-responsive.css" rel="stylesheet" />
+		<link href="https://static.junge-piraten.de/bootstrap-jupis-2.css" rel="stylesheet" />
+		<script src="https://static.junge-piraten.de/jquery-1.8.2.min.js"></script>
+		<script src="https://static.junge-piraten.de/bootstrap-2.1.1/js/bootstrap.min.js"></script>
+		<script src="/d3.v3.min.js"></script>
+		<link rel="icon" type="image/png" href="https://static.junge-piraten.de/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script src="/haushalt.js"></script>
+		<script src="/haushalt-nav.js"></script>
+		<script src="/haushalt-vis.js"></script>
+
+		<title>Junge Piraten Haushalt</title>
+	</head>
+	<body>
+		<div class="visible-desktop spacer-top">&nbsp;</div>
+
+		<div class="navbar navbar-fixed-top navbar-inverse">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<a class="brand" data-budget="">Haushalt <span class="year">2013</span></a>
+					<ul class="nav">
+						<li class="visible-desktop haushaltNav budget-3"><a data-budget="30000">Ertr&auml;ge</a></li>
+						<li class="visible-desktop haushaltNav budget-4"><a data-budget="40000">Aufwendungen</a></li>
+						<li class="hidden-phone haushaltNav budget-11"><a data-budget="11000">Forderungen</a></li>
+						<li class="hidden-phone haushaltNav budget-21"><a data-budget="21000">Verpflichtungen</a></li>
+						<li class="hidden-phone haushaltNav budget-12"><a data-budget="12000">Barvermögen</a></li>
+						<li class="dropdown hidden-desktop">
+							<a class="dropdown-toggle" data-toggle="dropdown">Budgets <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li class="haushaltNav budget-3"><a data-budget="30000">Ertr&auml;ge</a></li>
+								<li class="haushaltNav budget-4"><a data-budget="40000">Aufwendungen</a></li>
+								<li class="haushaltNav budget-11"><a data-budget="11000">Forderungen</a></li>
+								<li class="haushaltNav budget-21"><a data-budget="21000">Verpflichtungen</a></li>
+								<li class="haushaltNav budget-12"><a data-budget="12000">Barvermögen</a></li>
+							</ul>
+						</li>
+						<li class="dropdown hidden-phone">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Junge Piraten <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="https://www.junge-piraten.de/">Homepage</a></li>
+								<li><a href="https://www.junge-piraten.de/community/">Mitmachen</a></li>
+								<li><a href="https://forum.junge-piraten.de/">Forum</a></li>
+								<li><a href="https://wiki.junge-piraten.de/">Wiki</a></li>
+								<li><a href="https://ucp.junge-piraten.de/">UCP</a></li>
+								<li><a href="https://pad.junge-piraten.de/">Pads</a></li>
+								<li><a href="https://www.junge-piraten.de/presse">Presse</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<h1><a class="btn parentBudget">&laquo;</a>&nbsp;<span class="budgetLabel"></span> <span style="color:#9a9a9a;" class="hidden-phone">(<span class="budgetValue"></span>)</span><a href="" class="exportJson btn pull-right hidden-phone">JSON</a></h1>
+			<p class="budgetDescription"></p>
+			<div class="visualisation" style="width:100%;height:300px;margin:40px 0px;"></div>
+			<table class="table table-striped subBudgets">
+				<thead>
+					<tr>
+						<th>Posten</th>
+						<th>Betrag</th>
+						<th>Anteil</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>Summe</th>
+						<th class="budgetValue"></th>
+						<th>100.00 %</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</body>
+</html>
