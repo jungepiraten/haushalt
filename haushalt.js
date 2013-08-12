@@ -6,7 +6,15 @@ function formatCurrency(value) {
 		return "-";
 	}
 
-	var units = ["EUR", "Tsd EUR", "Mio EUR", "Mrd EUR"];
+	var units = [
+		{ unit: "EUR",
+		  fixed: 2 },
+		{ unit: "Tsd EUR",
+		  fixed: 1 },
+		{ unit: "Mio EUR",
+		  fixed: 1 },
+		{ unit: "Mrd EUR",
+		  fixed: 1 } ];
 	var curUnit = 0;
 
 	while (Math.abs(value) > 1500 && curUnit < units.length-1) {
@@ -14,7 +22,7 @@ function formatCurrency(value) {
 		curUnit++;
 	}
 
-	return value.toFixed(1) + " " + units[curUnit];
+	return value.toFixed(units[curUnit].fixed) + " " + units[curUnit].unit;
 }
 
 
