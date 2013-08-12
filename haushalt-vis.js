@@ -1,6 +1,6 @@
 var currentVizData = null;
 
-var color = d3.scale.category20();
+var color;
 
 function viz_color(account) {
 	return color(account.code);
