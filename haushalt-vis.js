@@ -28,7 +28,7 @@ function viz_load(data) {
 		.round(true)
 		.value(function(d) { return Math.abs(d.value); });
 
-	d3.select(".visualisation").style("position", "relative");.data([{"label":data.label,"children": subaccounts,"description":data.description}]).selectAll("div")
+	d3.select(".visualisation").style("position", "relative").data([{"label":data.label,"children": subaccounts,"description":data.description}]).selectAll("div")
 	   .data(treemap.nodes).enter()
 		.append("div")
 			.style("background", function(d) {return viz_color(d);})
