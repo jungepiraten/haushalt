@@ -93,7 +93,7 @@ function initView(budgetCode) {
 							}).text(" "))
 							.append(subAccount.label) )
 						.append($("<td>").text(formatCurrency(Math.abs(subAccount.value))))
-						.append($("<td>").text((data.value == 0 ? " - " : (subAccount.value / data.value * 100).toFixed(2) + " %")))
+						.append($("<td>").text((data.value == 0 ? " - " : Math.abs(subAccount.value / data.value * 100).toFixed(2) + " %")))
 						.click(function() {
 							if ($(this).data("hasSubAccounts")) {
 								goToBudget($(this).data("code"));
