@@ -59,6 +59,11 @@ function initView(budgetCode) {
 					.append($("<td>").attr("colspan","3").text("Keine Unterbudgets vorhanden"))
 				);
 			} else {
+				// Div by 0 otherwise
+				if (data.value != 0) {
+					viz_load(data);
+				}
+
 				data.subaccounts.sort(function (a, b) {
 					return a.code - b.code;
 				});
@@ -86,10 +91,6 @@ function initView(budgetCode) {
 							}
 						})
 					);
-				}
-				// Div by 0 otherwise
-				if (data.value != 0) {
-					viz_load(data);
 				}
 			}
 		}
