@@ -37,6 +37,7 @@ function viz_load(data) {
 					goToBudget(d.code);
 				}
 			}, true)
+			.style("box-sizing", "border-box")
 			.style("position", "absolute")
 			.style("border", "1px solid #9a9a9a")
 			.style("overflow", "hidden")
