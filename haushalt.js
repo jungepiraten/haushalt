@@ -59,14 +59,15 @@ function initView(budgetCode) {
 					.append($("<td>").attr("colspan","3").text("Keine Unterbudgets vorhanden"))
 				);
 			} else {
+				data.subaccounts.sort(function (a, b) {
+					return a.code - b.code;
+				});
+
 				// Div by 0 otherwise
 				if (data.value != 0) {
 					viz_load(data);
 				}
 
-				data.subaccounts.sort(function (a, b) {
-					return a.code - b.code;
-				});
 				for (var i in data.subaccounts) {
 					var subAccount = data.subaccounts[i];
 					$(".subBudgets tbody").append($("<tr>").css("cursor",(subAccount.hasSubAccounts ? "pointer" : "")).addClass("subBudget-" + subAccount.code)
