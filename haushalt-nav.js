@@ -43,5 +43,5 @@ function isValidCode(year, code) {
 	if (year == "2013") {
 		return code.length == 5 && !isNaN(code);
 	}
-	return true;
+	return false;
 }
