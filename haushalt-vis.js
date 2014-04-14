@@ -1,3 +1,4 @@
+var currentVizYear = null;
 var currentVizData = null;
 
 var color;
@@ -8,11 +9,13 @@ function viz_color(account) {
 
 function viz_hide() {
 	$(".visualisation").empty().hide();
+	currentVizYear = null;
 	currentVizData = null;
 }
 
-function viz_load(data) {
+function viz_load(year, data) {
 	color = d3.scale.category20();
+	currentVizYear = year;
 	currentVizData = data;
 
 	var subaccounts = data.subaccounts;
@@ -34,7 +37,7 @@ function viz_load(data) {
 			.style("background", function(d) {return viz_color(d);})
 			.on("click",function(d) {
 				if (d.hasSubAccounts) {
-					goToBudget(d.code);
+					goToBudget(year, d.code);
 				}
 			}, true)
 			.style("box-sizing", "border-box")
@@ -52,9 +55,10 @@ function viz_load(data) {
 }
 
 $(window).resize(function() {
-	if (currentVizData != null) {
+	if (currentYear != null && currentVizData != null) {
+		var year = currentVizYear;
 		var vizData = currentVizData;
 		viz_hide();
-		viz_load(vizData);
+		viz_load(year, vizData);
 	}
 });

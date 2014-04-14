@@ -1,9 +1,16 @@
-var year = "2013";
 var currentRequest = false;
+
+var _nav = {
+	"2013": {"3": "Erträge", "4": "Aufwendungen", "11": "Forderungen", "21": "Verpflichtungen", "12": "Barvermögen"}
+};
 
 function formatCurrency(value) {
 	if (value == 0) {
 		return "-";
+	}
+
+	if (value.toString().length > 4) {
+		return value + " EUR";
 	}
 
 	var units = [
@@ -32,11 +39,12 @@ function clearView() {
 	$(".parentBudget").addClass("disabled").unbind("click");
 	$(".exportJson").attr("href","#");
 	$(".subBudgets tbody").empty();
+	$(".ktoNav").empty();
 
 	viz_hide();
 }
 
-function initView(budgetCode) {
+function initView(year, budgetCode) {
 	if (currentRequest != false) {
 		currentRequest.abort();
 	}
@@ -44,6 +52,18 @@ function initView(budgetCode) {
 		type: "GET",
 		url: "/getBudgetInfo.php?year=" + year + "&code=" + budgetCode,
 		success: function(data) {
+			$(".year").text(year);
+			for (var ktoPrefix in _nav[year]) {
+				var kto = ktoPrefix + "00000".substring(0, 5-ktoPrefix.length);
+				var item = $("<li>").addClass("haushaltNav").addClass("budget-" + ktoPrefix)
+					.append($("<a>")
+					.data("kto",kto)
+					.click(function () {
+						goToBudget(year,$(this).data("kto"));
+					}).text(_nav[year][ktoPrefix]));
+				$(".ktoNav").append(item);
+			}
+
 			if (data.label == null) {
 				$(".budgetLabel").text("(Unbekannt)");
 				$(".subBudgets tbody").append($("<tr>")
@@ -60,7 +80,7 @@ function initView(budgetCode) {
 			$(".budgetDescription").text(data.description);
 			$(".budgetValue").text(formatCurrency(Math.abs(data.value)));
 			$(".exportJson").attr("href","http://opendata.junge-piraten.de/konten/" + year + "/" + data.code + "/info.json");
-			$("title").text(data.label + " – Junge Piraten Haushalt");
+			$("title").text(data.label + " – Junge Piraten Haushalt " + year);
 
 			if (data.subaccounts.length == 0) {
 				$(".subBudgets tbody").append($("<tr>")
@@ -73,7 +93,7 @@ function initView(budgetCode) {
 
 				// Div by 0 otherwise
 				if (data.value != 0) {
-					viz_load(data);
+					viz_load(year, data);
 				}
 
 				for (var i in data.subaccounts) {

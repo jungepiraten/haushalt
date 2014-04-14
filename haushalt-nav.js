@@ -1,3 +1,4 @@
+var currentYear = null;
 var currentCode = null;
 
 $(function () {
@@ -6,36 +7,41 @@ $(function () {
 		if (!ev.state)
 			return
 
-		// "/budget/"
-		goToBudget(location.pathname.substring(1,6));
+		// "/year/budget/"
+		goToBudget(location.pathname.split("/")[1], location.pathname.split("/")[2]);
 	});
 
 	$("*[data-budget]").css("cursor","pointer").click(function () {
-		goToBudget($(this).data("budget") + "");
+		goToBudget($(".year").text(), $(this).data("budget") + "");
 	});
 
-	goToBudget(location.pathname.substring(1,6));
+	goToBudget(location.pathname.split("/")[1], location.pathname.split("/")[2]);
 });
 
-function goToBudget(code) {
-	if (!isValidCode(code)) {
+function goToBudget(year, code) {
+	if (!isValidCode(year, code)) {
+		year = "2013";
 		code = "40000";
 	}
 
 	// Change URL if needed
-	if (code != currentCode) {
+	if (year != currentYear || code != currentCode) {
 		window.history.ready = true;
-		window.history.pushState(null, null, "/" + code + (code == "" ? "" : "/"));
+		window.history.pushState(null, null, "/" + year + "/" + code + (code == "" ? "" : "/"));
 	}
+	currentYear = year;
 	currentCode = code;
 
 	clearView();
 
-	initView(code);
+	initView(year, code);
 	$(".haushaltNav.budget-" + code.substring(0,1)).addClass("active");
 	$(".haushaltNav.budget-" + code.substring(0,2)).addClass("active");
 }
 
-function isValidCode(code) {
-	return code.length == 5 && !isNaN(code);
+function isValidCode(year, code) {
+	if (year == "2013") {
+		return code.length == 5 && !isNaN(code);
+	}
+	return true;
 }
