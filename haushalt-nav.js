@@ -19,8 +19,11 @@ $(function () {
 });
 
 function goToBudget(year, code) {
+	if (!isValidYear(year)) {
+		year = "2014";
+	}
+
 	if (!isValidCode(year, code)) {
-		year = "2013";
 		code = "40000";
 	}
 
@@ -39,9 +42,16 @@ function goToBudget(year, code) {
 	$(".haushaltNav.budget-" + code.substring(0,2)).addClass("active");
 }
 
+function isValidYear(year) {
+	return $.inArray(year, ["2013", "2014"]) == 0;
+}
+
 function isValidCode(year, code) {
 	if (year == "2013") {
 		return code.length == 5 && !isNaN(code);
+	}
+	if (year == "2014") {
+		return true;
 	}
 	return false;
 }

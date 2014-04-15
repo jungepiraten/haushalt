@@ -1,7 +1,8 @@
 var currentRequest = false;
 
 var _nav = {
-	"2013": {"3": "Erträge", "4": "Aufwendungen", "11": "Forderungen", "21": "Verpflichtungen", "12": "Barvermögen"}
+	"2013": {"3": "Erträge", "4": "Aufwendungen", "11": "Forderungen", "21": "Verpflichtungen", "12": "Barvermögen"},
+	"2014": {"3": "Erträge", "4": "Aufwendungen", "11": "Forderungen", "21": "Verpflichtungen", "12": "Barvermögen"}
 };
 
 function formatCurrency(value) {
@@ -45,6 +46,18 @@ function clearView() {
 }
 
 function initView(year, budgetCode) {
+	$(".year").text(year);
+	for (var ktoPrefix in _nav[year]) {
+		var kto = ktoPrefix + "00000".substring(ktoPrefix.length, 5);
+		var item = $("<li>").addClass("haushaltNav").addClass("budget-" + ktoPrefix)
+			.append($("<a>")
+			.data("kto",kto)
+			.click(function () {
+				goToBudget(year, $(this).data("kto"));
+			}).text(_nav[year][ktoPrefix]));
+		$(".ktoNav").append(item);
+	}
+
 	if (currentRequest != false) {
 		currentRequest.abort();
 	}
@@ -52,18 +65,6 @@ function initView(year, budgetCode) {
 		type: "GET",
 		url: "/getBudgetInfo.php?year=" + year + "&code=" + budgetCode,
 		success: function(data) {
-			$(".year").text(year);
-			for (var ktoPrefix in _nav[year]) {
-				var kto = ktoPrefix + "00000".substring(0, 5-ktoPrefix.length);
-				var item = $("<li>").addClass("haushaltNav").addClass("budget-" + ktoPrefix)
-					.append($("<a>")
-					.data("kto",kto)
-					.click(function () {
-						goToBudget(year,$(this).data("kto"));
-					}).text(_nav[year][ktoPrefix]));
-				$(".ktoNav").append(item);
-			}
-
 			if (data.label == null) {
 				$(".budgetLabel").text("(Unbekannt)");
 				$(".subBudgets tbody").append($("<tr>")
@@ -73,7 +74,7 @@ function initView(year, budgetCode) {
 			}
 			if (data.parentCode) {
 				$(".parentBudget").removeClass("disabled").click(function () {
-					goToBudget(data.parentCode);
+					goToBudget(year, data.parentCode);
 				});
 			}
 			$(".budgetLabel").text(data.label);
@@ -116,7 +117,7 @@ function initView(year, budgetCode) {
 						.append($("<td>").text((data.value == 0 ? " - " : Math.abs(subAccount.value / data.value * 100).toFixed(2) + " %")))
 						.click(function() {
 							if ($(this).data("hasSubAccounts")) {
-								goToBudget($(this).data("code"));
+								goToBudget(year, $(this).data("code"));
 							}
 						})
 					);

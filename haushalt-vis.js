@@ -1,7 +1,7 @@
 var currentVizYear = null;
 var currentVizData = null;
 
-var color;
+var color = d3.scale.category20();
 
 function viz_color(account) {
 	return color(account.code);
@@ -15,6 +15,7 @@ function viz_hide() {
 
 function viz_load(year, data) {
 	color = d3.scale.category20();
+
 	currentVizYear = year;
 	currentVizData = data;
 
