@@ -1,26 +1,6 @@
 <?php
 
-$memcache = new Memcache();
-$memcache->addServer("storage");
-$kontoCache = array();
-function getKontoInfo($year, $konto) {
-	global $kontoCache, $memcache;
-
-	if (!isset($kontoCache[$year."-".$konto]) || $kontoCache[$year."-".$konto] == null) {
-		$kontoCache[$year."-".$konto] = unserialize($memcache->get("haushalt-" . $year . "-" . $konto));
-	}
-	if (!isset($kontoCache[$year."-".$konto]) || $kontoCache[$year."-".$konto] == null) {
-		$kontoCache[$year."-".$konto] = unserialize(file_get_contents("http://opendata.junge-piraten.de/konten/" . $year . "/" . $konto . "/info.php"));
-		foreach ($kontoCache[$year."-".$konto]["subaccounts"] as $subaccount) {
-			$subinfo = getKontoInfo($year, $subaccount);
-			$kontoCache[$year."-".$konto]["debit"] += $subinfo["debit"];
-			$kontoCache[$year."-".$konto]["credit"] += $subinfo["credit"];
-			$kontoCache[$year."-".$konto]["balance"] += $subinfo["balance"];
-		}
-		$memcache->set("haushalt-" . $year . "-" . $konto, serialize($kontoCache[$year."-".$konto]), 0, 6*60*60);
-	}
-	return $kontoCache[$year."-".$konto];
-}
+require_once("getBudgetInfo.inc.php");
 
 $year = $_REQUEST["year"];
 $kontoInfo = getKontoInfo($year, $_REQUEST["code"]);
@@ -30,7 +10,7 @@ $info = array(
 	"parentCode" => $kontoInfo["parentCode"],
 	"label" => $kontoInfo["label"],
 	"description" => $kontoInfo["description"],
-	"value" => $kontoInfo["credit"] - $kontoInfo["debit"],
+	"value" => $kontoInfo["sum-balance"],
 	"subaccounts" => array()
 );
 
@@ -41,7 +21,7 @@ foreach ($kontoInfo["subaccounts"] as $subAccountCode) {
 		"code" => $subAccountCode,
 		"label" => $subAccountInfo["label"],
 		"description" => $subAccountInfo["description"],
-		"value" => $subAccountInfo["balance"],
+		"value" => $subAccountInfo["sum-balance"],
 		"hasSubAccounts" => !empty($subAccountInfo["subaccounts"])
 	);
 }
