@@ -47,11 +47,14 @@ function isValidYear(year) {
 }
 
 function isValidCode(year, code) {
+	if (!code) {
+		return false;
+	}
 	if (year == "2013") {
 		return code.length == 5 && !isNaN(code);
 	}
 	if (year == "2014") {
-		return true;
+		return code.length >= 3;
 	}
 	return false;
 }
