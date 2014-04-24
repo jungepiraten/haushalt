@@ -2,7 +2,7 @@ var currentRequest = false;
 
 var _nav = {
 	"2013": {"3": "Erträge", "4": "Aufwendungen", "11": "Forderungen", "21": "Verpflichtungen", "12": "Barvermögen"},
-	"2014": {"3": "Erträge", "4": "Aufwendungen", "11": "Forderungen", "21": "Verpflichtungen", "12": "Barvermögen"}
+	"2014": {"3": "Erträge", "4": "Aufwendungen", "12": "Forderungen", "23": "Verpflichtungen", "13": "Barvermögen"}
 };
 
 function formatCurrency(value) {
@@ -10,19 +10,19 @@ function formatCurrency(value) {
 		return "-";
 	}
 
-	if (value.toString().length > 4) {
-		return value + " EUR";
-	}
 
 	var units = [
 		{ unit: "EUR",
 		  fixed: 2 },
+/**
 		{ unit: "Tsd EUR",
 		  fixed: 1 },
 		{ unit: "Mio EUR",
 		  fixed: 1 },
 		{ unit: "Mrd EUR",
-		  fixed: 1 } ];
+		  fixed: 1 }
+**/
+	];
 	var curUnit = 0;
 
 	while (Math.abs(value) > 1500 && curUnit < units.length-1) {
